@@ -259,19 +259,14 @@
       if (lb) lb.remove();
       document.body.style.overflow = '';
     }
+    var __lbRenderSeq = 0;
     function openMermaidLightbox(srcDiv) {
       try {
         closeMermaidLightbox();
-        var svg = srcDiv.querySelector('svg');
-        if (!svg) return;
-        var vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number);
-        // Ojo: Mermaid fija width="100%", y parseFloat("100%") da 100.
-        // Solo vale el atributo si es un número en px; si no, el viewBox.
-        var wAttr = svg.getAttribute('width') || '';
-        var wNum = /%$/.test(wAttr.trim()) ? NaN : parseFloat(wAttr);
-        var natW = (!isNaN(wNum) && wNum > 0) ? wNum : (vb[2] || 1100);
-        // Se abre a tamaño natural (con scroll), no encajado
-        __lbBaseW = Math.min(2600, Math.max(natW, 1100));
+        // Fuente original guardada en el primer render (mismo texto del .md)
+        var src = srcDiv.getAttribute('data-mermaid-src');
+        var fallbackSvg = srcDiv.querySelector('svg');
+        if (!src && !fallbackSvg) return;
         __lbZoom = 1;
         var overlay = document.createElement('div');
         overlay.className = 'mermaid-lightbox';
@@ -281,13 +276,19 @@
           '<button type="button" data-lb="reset" aria-label="Tama\u00f1o original">100%</button>' +
           '<button type="button" data-lb="in" aria-label="Ampliar">+</button>' +
           '<button type="button" data-lb="close" aria-label="Cerrar">&#10005;</button></span></div>' +
-          '<div class="lb-body"></div>';
+          '<div class="lb-body"><p class="lb-loading">Cargando diagrama…</p></div>';
         var bodyEl = overlay.querySelector('.lb-body');
-        var clone = svg.cloneNode(true);
-        clone.removeAttribute('style');
-        clone.removeAttribute('id');
-        bodyEl.appendChild(clone);
-        applyLbZoom(clone);
+        var sizeFreshSvg = function () {
+          var svg = bodyEl.querySelector('svg');
+          if (!svg) return;
+          var vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number);
+          var wAttr = svg.getAttribute('width') || '';
+          var wNum = /%$/.test(wAttr.trim()) ? NaN : parseFloat(wAttr);
+          var natW = (!isNaN(wNum) && wNum > 0) ? wNum : (vb[2] || 1100);
+          // Se abre a tamaño natural (con scroll), no encajado
+          __lbBaseW = Math.min(2600, Math.max(natW, 1100));
+          applyLbZoom(svg);
+        };
         overlay.addEventListener('click', function (ev) {
           var btn = ev.target.closest ? ev.target.closest('button[data-lb]') : null;
           if (btn) {
@@ -296,13 +297,38 @@
             else if (act === 'out') __lbZoom = Math.max(0.5, __lbZoom / 1.25);
             else if (act === 'reset') __lbZoom = 1;
             else if (act === 'close') { closeMermaidLightbox(); return; }
-            applyLbZoom(clone);
+            var live = bodyEl.querySelector('svg');
+            if (live) applyLbZoom(live);
             return;
           }
           if (ev.target === overlay || ev.target === bodyEl) closeMermaidLightbox();
         });
         document.body.appendChild(overlay);
         document.body.style.overflow = 'hidden';
+        var useFallbackClone = function () {
+          if (!fallbackSvg) { closeMermaidLightbox(); return; }
+          bodyEl.innerHTML = '';
+          var clone = fallbackSvg.cloneNode(true);
+          clone.removeAttribute('style');
+          clone.removeAttribute('id');
+          bodyEl.appendChild(clone);
+          sizeFreshSvg();
+        };
+        if (src && mermaid.render) {
+          var renderId = 'lb-mermaid-' + (++__lbRenderSeq) + '-' + Date.now().toString(36);
+          try {
+            var pending = mermaid.render(renderId, src);
+            if (pending && pending.then) {
+              pending.then(function (out) {
+                try {
+                  bodyEl.innerHTML = out.svg;
+                  if (out.bindFunctions) out.bindFunctions(bodyEl);
+                  sizeFreshSvg();
+                } catch (e) { useFallbackClone(); }
+              }, useFallbackClone);
+            } else useFallbackClone();
+          } catch (e) { useFallbackClone(); }
+        } else useFallbackClone();
       } catch (err) { /* silently ignore lightbox failures */ }
     }
     document.addEventListener('click', function (e) {
