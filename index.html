@@ -13,7 +13,10 @@
   <style>
     :root { --theme-color: #4C6EF5; --excali-ink: #1e1e1e; }
     body { font-family: "Helvetica Neue", Arial, "Segoe UI", sans-serif; }
-    .content { max-width: 62rem; }
+    /* El contenedor ocupa todo el ancho disponible junto al sidebar;
+       es la sección de contenido la que se limita y se centra. */
+    .content { max-width: none; }
+    .markdown-section { max-width: 62rem; margin: 0 auto; }
     /* Diagrama: sin tarjeta, directo sobre el blanco de la página.
        Los diagramas anchos se escalan al ancho del contenido; los
        verticales (más altos que anchos) se limitan por altura para
