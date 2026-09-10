@@ -233,6 +233,8 @@
       svg.style.background = '#fff';
       svg.style.borderRadius = '8px';
       svg.style.display = 'block';
+      var lbl = document.querySelector('.mermaid-lightbox [data-lb="reset"]');
+      if (lbl) lbl.textContent = Math.round(__lbZoom * 100) + '%';
     }
     function closeMermaidLightbox() {
       var lb = document.querySelector('.mermaid-lightbox');
@@ -245,7 +247,12 @@
         var svg = srcDiv.querySelector('svg');
         if (!svg) return;
         var vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number);
-        var natW = parseFloat(svg.getAttribute('width')) || vb[2] || 1100;
+        // Ojo: Mermaid fija width="100%", y parseFloat("100%") da 100.
+        // Solo vale el atributo si es un número en px; si no, el viewBox.
+        var wAttr = svg.getAttribute('width') || '';
+        var wNum = /%$/.test(wAttr.trim()) ? NaN : parseFloat(wAttr);
+        var natW = (!isNaN(wNum) && wNum > 0) ? wNum : (vb[2] || 1100);
+        // Se abre a tamaño natural (con scroll), no encajado
         __lbBaseW = Math.min(2600, Math.max(natW, 1100));
         __lbZoom = 1;
         var overlay = document.createElement('div');
