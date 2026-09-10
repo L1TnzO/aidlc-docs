@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Documentación técnica de AI-DLC Workflows 2.0 (AWS) — metodología e implementación en ~100 markdowns hiperenlazados con diagramas Mermaid.">
+  <title>AI-DLC</title>
+  <link rel="stylesheet" href="vendor/vue.css">
+  <!-- Fuente manuscrita estilo Excalidraw (online: se usa; offline: fallback a Segoe Print / cursive) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    :root { --theme-color: #4C6EF5; --excali-ink: #1e1e1e; }
+    body { font-family: "Helvetica Neue", Arial, "Segoe UI", sans-serif; }
+    .content { max-width: 62rem; }
+    /* Diagrama: sin tarjeta, directo sobre el blanco de la página.
+       El SVG se escala al ancho del contenido: nunca hay slider. */
+    .mermaid {
+      overflow: hidden;
+      margin: 1.4em 0;
+      padding: 0;
+      background: #ffffff;
+      border: none;
+      text-align: center;
+    }
+    .mermaid svg {
+      max-width: 100% !important;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    .mermaid svg text { font-weight: 500; }
+    /* Anti-recorte: si mermaid midió la etiqueta con la fuente fallback
+       (más angosta), el texto igual se muestra en vez de cortarse */
+    .mermaid foreignObject { overflow: visible !important; }
+    .mermaid .node > div,
+    .mermaid .label { overflow: visible !important; white-space: nowrap; }
+    .mermaid .edgeLabel { background: #ffffff; }
+    blockquote { border-left: 4px solid #cbd5e1; background: #f8fafc; padding: .4em .9em; border-radius: 0 4px 4px 0; color: #334155; }
+    .sidebar { padding-top: 2.2rem; }
+    .sidebar ul li a { font-size: 13.5px; }
+    .sidebar ul li strong a, .sidebar ul li p a { font-size: 14.5px; }
+    .search .search-input { background: #f1f5f9; }
+    table { display: block; overflow-x: auto; max-width: 100%; }
+    .anchor span { color: #94a3b8; }
+    h1 { border-bottom: 2px solid #e2e8f0; padding-bottom: .3em; }
+    .cover-main h1 span { color: #243447; }
+    .cover { background: linear-gradient(135deg, #f8fafc 0%, #e9eef3 100%); }
+  </style>
+</head>
+<body>
+  <div id="app">Cargando AI-DLC…</div>
+
+  <!-- Mermaid v11 (UMD, local/offline) + inicialización estilo Excalidraw.
+       Todo el estilo global vive aquí: los ~100 .md no se tocan. -->
+  <script src="vendor/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      look: 'handDrawn',
+      handDrawnSeed: 7,
+      securityLevel: 'loose',
+      fontFamily: '"Patrick Hand", "Caveat", "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive, sans-serif',
+      themeVariables: {
+        background: '#FFFFFF',
+        primaryColor: '#FFF9DB',
+        primaryBorderColor: '#1e1e1e',
+        primaryTextColor: '#1e1e1e',
+        secondaryColor: '#E7F5FF',
+        secondaryBorderColor: '#1e1e1e',
+        secondaryTextColor: '#1e1e1e',
+        tertiaryColor: '#E6FCF5',
+        tertiaryBorderColor: '#1e1e1e',
+        tertiaryTextColor: '#1e1e1e',
+        lineColor: '#1e1e1e',
+        textColor: '#1e1e1e',
+        mainBkg: '#FFF9DB',
+        nodeBorder: '#1e1e1e',
+        clusterBkg: '#FFFFFF',
+        clusterBorder: '#868e96',
+        fontSize: '16px'
+      },
+      themeCSS: [
+        '.node rect, .node polygon, .node ellipse, .node circle {',
+        '  stroke-width: 2px;',
+        '  stroke-linecap: round;',
+        '  stroke-linejoin: round;',
+        '}',
+        '.edgePath path { stroke-width: 2px; stroke-linecap: round; }',
+        '.cluster rect { stroke-width: 2px; stroke-dasharray: 10 6; rx: 16px; }',
+        '.edgeLabel { font-weight: 500; }',
+        '.marker, marker path { fill: #1e1e1e !important; stroke: #1e1e1e !important; }'
+      ].join('\n'),
+      flowchart: { curve: 'basis', htmlLabels: true, nodeSpacing: 60, rankSpacing: 70, padding: 16, diagramPadding: 16, useMaxWidth: true },
+      sequence: { actorMargin: 40, boxMargin: 10 },
+      mindmap: { padding: 10 }
+    });
+    window.mermaid = mermaid;
+    /* Re-render cuando la fuente manuscrita termina de cargar.
+       Sin esto, mermaid mide las cajas con la fuente fallback (más angosta)
+       y el texto hand-drawn queda cortado: "(solo revisa)" -> "(solo revie…". */
+    var __mermaidFontsRerendered = false;
+    function renderMermaid() {
+      try {
+        document.querySelectorAll('.mermaid').forEach(function (div) {
+          var src = div.getAttribute('data-mermaid-src');
+          if (!src) {
+            // Primer render: guardar el código fuente original
+            if (!div.querySelector('svg')) div.setAttribute('data-mermaid-src', div.textContent);
+          } else if (div.querySelector('svg')) {
+            // Re-render: restaurar el fuente (el SVG ya procesado no se re-mide)
+            div.textContent = src;
+            div.removeAttribute('data-processed');
+          }
+        });
+        mermaid.run({ querySelector: '.mermaid', suppressErrors: true });
+      } catch (e) { /* silently ignore single-diagram failures */ }
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        if (!__mermaidFontsRerendered) { __mermaidFontsRerendered = true; renderMermaid(); }
+      });
+    }
+  </script>
+
+  <!-- Config de docsify: ANTES de docsify.min.js y de los plugins vendor,
+       para que search/zoom concatenen sus plugins sobre esta configuración
+       en vez de ser sobrescritos. -->
+  <script>
+    window.$docsify = {
+      name: 'AI-DLC',
+      repo: '',
+      homepage: 'README.md',
+      loadSidebar: true,
+      alias: { '/.*/_sidebar.md': '/_sidebar.md' },
+      subMaxLevel: 3,
+      auto2top: true,
+      coverpage: false,
+      onlyCover: false,
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        namespace: 'aidlc-desglose',
+        placeholder: 'Buscar en el desglose…',
+        noData: 'Sin resultados',
+        depth: 3
+      },
+      plugins: [
+        function mermaidDocsify(hook, vm) {
+          hook.afterEach(function (html, next) {
+            var el = document.createElement('div');
+            el.innerHTML = html;
+            var pres = el.querySelectorAll('pre[data-lang=mermaid]');
+            if (pres.length) {
+              pres.forEach(function (pre) {
+                var div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = pre.textContent;
+                div.setAttribute('data-mermaid-src', pre.textContent);
+                pre.parentNode.replaceChild(div, pre);
+              });
+            }
+            next(el.innerHTML);
+          });
+          hook.doneEach(function () {
+            renderMermaid();
+          });
+        },
+        function footer(hook) {
+          var footer = [
+            '<hr/>',
+            '<footer style="text-align:center;color:#94a3b8;font-size:12px;padding:1em 0 2em">',
+            'AI-DLC Workflows 2.0 (AWS Labs) · repo <code>awslabs/aidlc-workflows</code> v2.7.1 · ',
+            '<a href="#/" style="color:#4C6EF5">volver al inicio</a>',
+            '</footer>'
+          ].join('');
+          hook.afterEach(function (html) {
+            return html + footer;
+          });
+        }
+      ]
+    };
+  </script>
+
+  <!-- Docsify + plugins vendor (locales): después de la config,
+       se auto-registran concatenando a $docsify.plugins -->
+  <script src="vendor/docsify.min.js"></script>
+  <script src="vendor/search.min.js"></script>
+  <script src="vendor/zoom-image.min.js"></script>
+</body>
+</html>
