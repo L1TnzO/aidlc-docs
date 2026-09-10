@@ -15,7 +15,9 @@
     body { font-family: "Helvetica Neue", Arial, "Segoe UI", sans-serif; }
     .content { max-width: 62rem; }
     /* Diagrama: sin tarjeta, directo sobre el blanco de la página.
-       El SVG se escala al ancho del contenido: nunca hay slider. */
+       Los diagramas anchos se escalan al ancho del contenido; los
+       verticales (más altos que anchos) se limitan por altura para
+       que no ocupen varias pantallas: nunca hay slider. */
     .mermaid {
       overflow: hidden;
       margin: 1.4em 0;
@@ -26,8 +28,11 @@
     }
     .mermaid svg {
       max-width: 100% !important;
+      max-height: 82vh;
       width: 100%;
       height: auto;
+      display: block;
+      margin: 0 auto;
       overflow: visible;
     }
     .mermaid svg text { font-weight: 500; }
@@ -115,8 +120,40 @@
             div.removeAttribute('data-processed');
           }
         });
-        mermaid.run({ querySelector: '.mermaid', suppressErrors: true });
+        var pending = mermaid.run({ querySelector: '.mermaid', suppressErrors: true });
+        if (pending && pending.then) pending.then(fitMermaid, fitMermaid);
+        else fitMermaid();
       } catch (e) { /* silently ignore single-diagram failures */ }
+    }
+    /* Ajuste por proporción: un SVG vertical (viewBox más alto que
+       ancho) con width:100% quedaría gigante. Se limita por altura
+       (72vh) y el ancho se deriva de la proporción; el resto de
+       diagramas sigue a ancho completo. Sin distorsión en ningún
+       caso (preserveAspectRatio "meet" del SVG). */
+    function fitMermaid() {
+      try {
+        document.querySelectorAll('.mermaid svg').forEach(function (svg) {
+          var vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number);
+          var w = vb[2] || 0, h = vb[3] || 0;
+          if (!w || !h) {
+            var r = svg.getBoundingClientRect();
+            w = r.width; h = r.height;
+          }
+          if (!w || !h) return;
+          svg.style.display = 'block';
+          svg.style.margin = '0 auto';
+          svg.style.maxWidth = '100%';
+          if (h > w * 1.05) {
+            svg.style.width = 'auto';
+            svg.style.height = '72vh';
+            svg.style.maxHeight = '72vh';
+          } else {
+            svg.style.width = '100%';
+            svg.style.height = 'auto';
+            svg.style.maxHeight = 'none';
+          }
+        });
+      } catch (e) { /* silently ignore fit failures */ }
     }
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () {
