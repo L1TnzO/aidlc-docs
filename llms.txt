@@ -1,0 +1,134 @@
+# AI-DLC
+
+> Documentación técnica de AI-DLC (AI-Driven Development Life Cycle), metodología de AWS que convierte agentes de IA en workflows de ingeniería verificables y auto-correctivos. 5 fases, 33 etapas, 14 agentes, 8 protocolos, 11 scopes.
+
+## Documentación completa en un solo archivo
+- [https://l1tnzo.github.io/aidlc-docs/llms-full.txt](https://l1tnzo.github.io/aidlc-docs/llms-full.txt): los 107 documentos concatenados en texto plano
+
+## Secciones
+### (raíz)
+- [AI-DLC](https://l1tnzo.github.io/aidlc-docs/README.md)
+- [404 — Página no encontrada](https://l1tnzo.github.io/aidlc-docs/_404.md)
+- [AI-DLC](https://l1tnzo.github.io/aidlc-docs/_coverpage.md)
+- [_sidebar.md](https://l1tnzo.github.io/aidlc-docs/_sidebar.md)
+
+### 00-vision
+- [00 · Visión — el qué y el por qué](https://l1tnzo.github.io/aidlc-docs/00-vision/README.md)
+- [Arquitectura: one core, many harnesses](https://l1tnzo.github.io/aidlc-docs/00-vision/arquitectura-one-core.md)
+- [Cifras clave del ecosistema](https://l1tnzo.github.io/aidlc-docs/00-vision/cifras-clave.md)
+- [Glosario AI-DLC](https://l1tnzo.github.io/aidlc-docs/00-vision/glosario.md)
+- [Qué es AI-DLC](https://l1tnzo.github.io/aidlc-docs/00-vision/que-es-aidlc.md)
+
+### 01-fases
+- [01 · Las 5 fases del ciclo de vida](https://l1tnzo.github.io/aidlc-docs/01-fases/README.md)
+- [Fase 0 · Inicialización (Initialization)](https://l1tnzo.github.io/aidlc-docs/01-fases/fase-0-inicializacion.md)
+- [Fase 1 · Ideation](https://l1tnzo.github.io/aidlc-docs/01-fases/fase-1-ideacion.md)
+- [Fase 2 · Inception](https://l1tnzo.github.io/aidlc-docs/01-fases/fase-2-inception.md)
+- [Fase 3 · Construction](https://l1tnzo.github.io/aidlc-docs/01-fases/fase-3-construccion.md)
+- [Fase 4 · Operation](https://l1tnzo.github.io/aidlc-docs/01-fases/fase-4-operacion.md)
+
+### 02-etapas
+- [Las 33 etapas — índice maestro](https://l1tnzo.github.io/aidlc-docs/02-etapas/README.md)
+- [3.6 · Build & Test](https://l1tnzo.github.io/aidlc-docs/02-etapas/construction/build-and-test.md)
+- [3.7 · CI Pipeline](https://l1tnzo.github.io/aidlc-docs/02-etapas/construction/ci-pipeline.md)
+- [3.5 · Code Generation](https://l1tnzo.github.io/aidlc-docs/02-etapas/construction/code-generation.md)
+- [3.1 · Functional Design](https://l1tnzo.github.io/aidlc-docs/02-etapas/construction/functional-design.md)
+- [3.4 · Infrastructure Design](https://l1tnzo.github.io/aidlc-docs/02-etapas/construction/infrastructure-design.md)
+- [3.3 · NFR Design](https://l1tnzo.github.io/aidlc-docs/02-etapas/construction/nfr-design.md)
+- [3.2 · NFR Requirements](https://l1tnzo.github.io/aidlc-docs/02-etapas/construction/nfr-requirements.md)
+- [1.7 · Initiative Approval & Handoff](https://l1tnzo.github.io/aidlc-docs/02-etapas/ideation/approval-handoff.md)
+- [1.3 · Feasibility & Constraint Analysis](https://l1tnzo.github.io/aidlc-docs/02-etapas/ideation/feasibility.md)
+- [1.1 · Intent Capture & Framing](https://l1tnzo.github.io/aidlc-docs/02-etapas/ideation/intent-capture.md)
+- [1.2 · Market Research](https://l1tnzo.github.io/aidlc-docs/02-etapas/ideation/market-research.md)
+- [1.6 · Rough Mockups](https://l1tnzo.github.io/aidlc-docs/02-etapas/ideation/rough-mockups.md)
+- [1.4 · Scope Definition](https://l1tnzo.github.io/aidlc-docs/02-etapas/ideation/scope-definition.md)
+- [1.5 · Team Formation](https://l1tnzo.github.io/aidlc-docs/02-etapas/ideation/team-formation.md)
+- [2.8 · Contract Design](https://l1tnzo.github.io/aidlc-docs/02-etapas/inception/contract-design.md)
+- [2.9 · Delivery Planning](https://l1tnzo.github.io/aidlc-docs/02-etapas/inception/delivery-planning.md)
+- [2.6 · Domain Design](https://l1tnzo.github.io/aidlc-docs/02-etapas/inception/domain-design.md)
+- [2.2 · Practices Discovery](https://l1tnzo.github.io/aidlc-docs/02-etapas/inception/practices-discovery.md)
+- [2.5 · Refined Mockups](https://l1tnzo.github.io/aidlc-docs/02-etapas/inception/refined-mockups.md)
+- [2.3 · Requirements Analysis](https://l1tnzo.github.io/aidlc-docs/02-etapas/inception/requirements-analysis.md)
+- [2.1 · Reverse Engineering](https://l1tnzo.github.io/aidlc-docs/02-etapas/inception/reverse-engineering.md)
+- [2.7 · Units Generation](https://l1tnzo.github.io/aidlc-docs/02-etapas/inception/units-generation.md)
+- [2.4 · User Stories](https://l1tnzo.github.io/aidlc-docs/02-etapas/inception/user-stories.md)
+- [0.3 · State Init](https://l1tnzo.github.io/aidlc-docs/02-etapas/initialization/state-init.md)
+- [0.2 · Workspace Detection](https://l1tnzo.github.io/aidlc-docs/02-etapas/initialization/workspace-detection.md)
+- [0.1 · Workspace Scaffold](https://l1tnzo.github.io/aidlc-docs/02-etapas/initialization/workspace-scaffold.md)
+- [4.3 · Deployment Execution](https://l1tnzo.github.io/aidlc-docs/02-etapas/operation/deployment-execution.md)
+- [4.1 · Deployment Pipeline](https://l1tnzo.github.io/aidlc-docs/02-etapas/operation/deployment-pipeline.md)
+- [4.2 · Environment Provisioning](https://l1tnzo.github.io/aidlc-docs/02-etapas/operation/environment-provisioning.md)
+- [4.7 · Feedback & Optimization](https://l1tnzo.github.io/aidlc-docs/02-etapas/operation/feedback-optimization.md)
+- [4.5 · Incident Response](https://l1tnzo.github.io/aidlc-docs/02-etapas/operation/incident-response.md)
+- [4.4 · Observability Setup](https://l1tnzo.github.io/aidlc-docs/02-etapas/operation/observability-setup.md)
+- [4.6 · Performance Validation](https://l1tnzo.github.io/aidlc-docs/02-etapas/operation/performance-validation.md)
+
+### 03-agentes
+- [03 · El roster de 14 agentes](https://l1tnzo.github.io/aidlc-docs/03-agentes/README.md)
+- [Architect Agent](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-architect-agent.md)
+- [Architecture Reviewer (reviewer)](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-architecture-reviewer-agent.md)
+- [AWS Platform Agent](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-aws-platform-agent.md)
+- [Compliance Agent](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-compliance-agent.md)
+- [Composer Agent (adaptativo)](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-composer-agent.md)
+- [Delivery Agent](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-delivery-agent.md)
+- [Design Agent](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-design-agent.md)
+- [Developer Agent](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-developer-agent.md)
+- [DevSecOps Agent](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-devsecops-agent.md)
+- [Operations Agent](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-operations-agent.md)
+- [Pipeline & Deploy Agent](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-pipeline-deploy-agent.md)
+- [Product Agent](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-product-agent.md)
+- [Product Lead (reviewer)](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-product-lead-agent.md)
+- [Quality Agent](https://l1tnzo.github.io/aidlc-docs/03-agentes/aidlc-quality-agent.md)
+
+### 04-protocolos
+- [04 · El sistema de protocolos](https://l1tnzo.github.io/aidlc-docs/04-protocolos/README.md)
+- [Formato de definición de etapa](https://l1tnzo.github.io/aidlc-docs/04-protocolos/definicion-de-etapa.md)
+- [Protocolo de Construction](https://l1tnzo.github.io/aidlc-docs/04-protocolos/protocolo-construction.md)
+- [Protocolo de ensemble (topologías multi-agente)](https://l1tnzo.github.io/aidlc-docs/04-protocolos/protocolo-ensemble.md)
+- [Protocolo de governance (phase boundary verification)](https://l1tnzo.github.io/aidlc-docs/04-protocolos/protocolo-governance.md)
+- [Protocolo de recovery & change handling](https://l1tnzo.github.io/aidlc-docs/04-protocolos/protocolo-recovery.md)
+- [Protocolo de reviewer (§12a)](https://l1tnzo.github.io/aidlc-docs/04-protocolos/protocolo-reviewer.md)
+- [stage-protocol: el protocolo maestro](https://l1tnzo.github.io/aidlc-docs/04-protocolos/protocolo-stage.md)
+- [Protocolo de swarm](https://l1tnzo.github.io/aidlc-docs/04-protocolos/protocolo-swarm.md)
+
+### 05-scopes
+- [05 · Scopes: 11 formas de correr el mismo ciclo](https://l1tnzo.github.io/aidlc-docs/05-scopes/README.md)
+- [Scope `bugfix`](https://l1tnzo.github.io/aidlc-docs/05-scopes/bugfix.md)
+- [Scope `classic`](https://l1tnzo.github.io/aidlc-docs/05-scopes/classic.md)
+- [Scope `enterprise`](https://l1tnzo.github.io/aidlc-docs/05-scopes/enterprise.md)
+- [Scope `express`](https://l1tnzo.github.io/aidlc-docs/05-scopes/express.md)
+- [Scope `feature`](https://l1tnzo.github.io/aidlc-docs/05-scopes/feature.md)
+- [Scope `infra`](https://l1tnzo.github.io/aidlc-docs/05-scopes/infra.md)
+- [Scope `mvp`](https://l1tnzo.github.io/aidlc-docs/05-scopes/mvp.md)
+- [Scope `poc`](https://l1tnzo.github.io/aidlc-docs/05-scopes/poc.md)
+- [Scope `refactor`](https://l1tnzo.github.io/aidlc-docs/05-scopes/refactor.md)
+- [Scope `security-patch`](https://l1tnzo.github.io/aidlc-docs/05-scopes/security-patch.md)
+- [Scope `workshop`](https://l1tnzo.github.io/aidlc-docs/05-scopes/workshop.md)
+
+### 06-maquinaria
+- [06 · Maquinaria — el motor de ejecución](https://l1tnzo.github.io/aidlc-docs/06-maquinaria/README.md)
+- [Auditoría: 91 eventos, 22 categorías](https://l1tnzo.github.io/aidlc-docs/06-maquinaria/auditoria.md)
+- [El ciclo de gate (aprobación → rechazo → revisión)](https://l1tnzo.github.io/aidlc-docs/06-maquinaria/ciclo-de-gate.md)
+- [Ciclos de vida: Units, Bolts, worktrees y autonomía](https://l1tnzo.github.io/aidlc-docs/06-maquinaria/ciclos-de-vida.md)
+- [El oficio del conductor](https://l1tnzo.github.io/aidlc-docs/06-maquinaria/conductor.md)
+- [Los 17 hooks](https://l1tnzo.github.io/aidlc-docs/06-maquinaria/hooks.md)
+- [Memoria de método y el bucle de aprendizaje](https://l1tnzo.github.io/aidlc-docs/06-maquinaria/memoria-y-aprendizaje.md)
+- [Los 6 sensores](https://l1tnzo.github.io/aidlc-docs/06-maquinaria/sensores.md)
+- [El sistema de estado (aidlc-state.md)](https://l1tnzo.github.io/aidlc-docs/06-maquinaria/sistema-de-estado.md)
+- [Topologías de ensemble (cómo colaboran los agentes)](https://l1tnzo.github.io/aidlc-docs/06-maquinaria/topologias.md)
+
+### 07-knowledge
+- [07 · La base de conocimiento (two-tier)](https://l1tnzo.github.io/aidlc-docs/07-knowledge/README.md)
+- [Safeguards brownfield](https://l1tnzo.github.io/aidlc-docs/07-knowledge/brownfield-safeguards.md)
+- [Principios de la metodología](https://l1tnzo.github.io/aidlc-docs/07-knowledge/principios.md)
+- [Verificación automática: trazabilidad elemento a elemento](https://l1tnzo.github.io/aidlc-docs/07-knowledge/verificacion.md)
+
+### 08-anexos
+- [08 · Anexos — matrices y referencia cruzada](https://l1tnzo.github.io/aidlc-docs/08-anexos/README.md)
+- [AI-DLC frente a las metodologías clásicas](https://l1tnzo.github.io/aidlc-docs/08-anexos/aidlc-vs-agile.md)
+- [Errores frecuentes y su fix](https://l1tnzo.github.io/aidlc-docs/08-anexos/errores-frecuentes.md)
+- [Preguntas frecuentes](https://l1tnzo.github.io/aidlc-docs/08-anexos/faq.md)
+- [Matriz de artefactos — el grafo produces/consumes](https://l1tnzo.github.io/aidlc-docs/08-anexos/matriz-artefactos.md)
+- [Matriz etapas × agentes (33 × 13)](https://l1tnzo.github.io/aidlc-docs/08-anexos/matriz-etapas-agentes.md)
+- [Matriz scopes × etapas (11 × 33)](https://l1tnzo.github.io/aidlc-docs/08-anexos/matriz-scopes-etapas.md)
+- [Rutas de lectura de este desglose](https://l1tnzo.github.io/aidlc-docs/08-anexos/rutas-de-lectura.md)
