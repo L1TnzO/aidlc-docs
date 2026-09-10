@@ -28,7 +28,55 @@
       background: #ffffff;
       border: none;
       text-align: center;
+      position: relative;
+      cursor: zoom-in;
     }
+    /* Pista de ampliación al pasar el cursor */
+    .mermaid:hover::after {
+      content: '⤢ Clic para ampliar';
+      position: absolute;
+      top: .4rem;
+      right: .6rem;
+      font-size: 12px;
+      color: #475569;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: .15rem .6rem;
+      pointer-events: none;
+    }
+    /* Lightbox de diagrama: fondo oscuro, diagrama a tamaño real
+       con scroll para explorar y botones de zoom */
+    .mermaid-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, .88);
+      display: flex;
+      flex-direction: column;
+      cursor: default;
+    }
+    .mermaid-lightbox .lb-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: .6rem 1rem;
+      color: #e2e8f0;
+      font-size: 13.5px;
+    }
+    .mermaid-lightbox .lb-actions { display: flex; gap: .4rem; }
+    .mermaid-lightbox .lb-actions button {
+      background: #1e293b;
+      color: #fff;
+      border: 1px solid #475569;
+      border-radius: 6px;
+      padding: .3rem .7rem;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .mermaid-lightbox .lb-actions button:hover { background: #334155; }
+    .mermaid-lightbox .lb-body { flex: 1; overflow: auto; padding: 1.5rem; }
     .mermaid svg {
       max-width: 100% !important;
       max-height: 82vh;
@@ -163,6 +211,77 @@
         if (!__mermaidFontsRerendered) { __mermaidFontsRerendered = true; renderMermaid(); }
       });
     }
+    /* Lightbox: clic en un diagrama lo abre a tamaño real (ancho
+       natural del SVG, mínimo 1100px para legibilidad) dentro de un
+       contenedor con scroll + zoom. Estándar "overview first, zoom
+       and details on demand". Los enlaces dentro de nodos siguen
+       funcionando (no abren el lightbox). */
+    var __lbZoom = 1, __lbBaseW = 1100;
+    function applyLbZoom(svg) {
+      svg.style.width = Math.round(__lbBaseW * __lbZoom) + 'px';
+      svg.style.height = 'auto';
+      svg.style.maxWidth = 'none';
+      svg.style.maxHeight = 'none';
+      svg.style.background = '#fff';
+      svg.style.borderRadius = '8px';
+      svg.style.display = 'block';
+    }
+    function closeMermaidLightbox() {
+      var lb = document.querySelector('.mermaid-lightbox');
+      if (lb) lb.remove();
+      document.body.style.overflow = '';
+    }
+    function openMermaidLightbox(srcDiv) {
+      try {
+        closeMermaidLightbox();
+        var svg = srcDiv.querySelector('svg');
+        if (!svg) return;
+        var vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number);
+        var natW = parseFloat(svg.getAttribute('width')) || vb[2] || 1100;
+        __lbBaseW = Math.min(2600, Math.max(natW, 1100));
+        __lbZoom = 1;
+        var overlay = document.createElement('div');
+        overlay.className = 'mermaid-lightbox';
+        overlay.innerHTML =
+          '<div class="lb-bar"><span>Diagrama &middot; scroll para explorar &middot; <b>+</b>/<b>&minus;</b> zoom &middot; <b>Esc</b> cerrar</span>' +
+          '<span class="lb-actions"><button type="button" data-lb="out" aria-label="Reducir">&minus;</button>' +
+          '<button type="button" data-lb="reset" aria-label="Tama\u00f1o original">100%</button>' +
+          '<button type="button" data-lb="in" aria-label="Ampliar">+</button>' +
+          '<button type="button" data-lb="close" aria-label="Cerrar">&#10005;</button></span></div>' +
+          '<div class="lb-body"></div>';
+        var bodyEl = overlay.querySelector('.lb-body');
+        var clone = svg.cloneNode(true);
+        clone.removeAttribute('style');
+        clone.removeAttribute('id');
+        bodyEl.appendChild(clone);
+        applyLbZoom(clone);
+        overlay.addEventListener('click', function (ev) {
+          var btn = ev.target.closest ? ev.target.closest('button[data-lb]') : null;
+          if (btn) {
+            var act = btn.getAttribute('data-lb');
+            if (act === 'in') __lbZoom = Math.min(4, __lbZoom * 1.25);
+            else if (act === 'out') __lbZoom = Math.max(0.5, __lbZoom / 1.25);
+            else if (act === 'reset') __lbZoom = 1;
+            else if (act === 'close') { closeMermaidLightbox(); return; }
+            applyLbZoom(clone);
+            return;
+          }
+          if (ev.target === overlay || ev.target === bodyEl) closeMermaidLightbox();
+        });
+        document.body.appendChild(overlay);
+        document.body.style.overflow = 'hidden';
+      } catch (err) { /* silently ignore lightbox failures */ }
+    }
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest) return;
+      if (e.target.closest('.mermaid-lightbox')) return;
+      var box = e.target.closest('.mermaid');
+      if (!box || e.target.closest('a')) return;
+      openMermaidLightbox(box);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMermaidLightbox();
+    });
   </script>
 
   <!-- Config de docsify: ANTES de docsify.min.js y de los plugins vendor,
